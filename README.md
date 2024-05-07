@@ -18,7 +18,7 @@ The diagram of FB-MOAC algorithm is shown below.
 ## Usage
 - To train the RL agent on a FB-MDP: run `train.py`
 - To test a preTrained network : run `test.py`
-- To plot graphs using log files : run `plot_graph.py` ?
+- To plot graphs using log files : run `plot_graph.py`
 
   ### Experiments:
   Notice that current (standard) RL baselines/experiments are not applicable to forward-backward MDPs. Hence, we go beyond them to assess our algorithm on real-world problems characterized by FB-MDPs.
