@@ -4,19 +4,13 @@
 Created on Tue May 23 11:29:48 2023
 
 """
-
-
-import os
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
-
 import numpy as np
 import torch
 import seaborn as sns
 from FBMOAC import Agent, ForwardCriticBase, BackwardCriticBase, Actor
-# from environments.EdgeCaching import NetEnv
-from environments.ComputationOffloading import NetEnv
+from environments.EdgeCaching import NetEnv
+# from environments.ComputationOffloading import NetEnv
 import matplotlib.pyplot as plt
-
 
 # %% 
 def train():
@@ -33,10 +27,10 @@ def train():
     N_MCS           = 4                                      # Number of Monte-Carlo Samples for the episodic MCS-average  add-on
     EpisodeNumber   = 40000                                  # Number of training episodes
     TimeSlots       = 256                                    # Number of time-steps in each episode
-    LearningRate    = 6e-3                                   # Learning-Rate of the FB-MOAC algorithm
+    LearningRate    = 3e-4                                   # Learning-Rate of the FB-MOAC algorithm (for the multi-objective actor, forward critic and backward critic networks)
     SmoothingFactor = 0.95                                   # The smoothing factor of the episodic MCS-average  add-on
     DiscountFactor  = 0.92                                   # Discount-factor related to the cumulative rewards.
-    PreferenceCoeff = torch.tensor([1, 1,  1])               # Preference parameter to extract a Pareto-front.
+    PreferenceCoeff = torch.tensor([1,  1,  1/3])              # Preference parameter to extract a Pareto-front.
     
     print("-------------------------------------------------------------") 
     print("Number of training episodes = {}\nNumber of time-steps in each episode = {}\nLearning Rate = {}\nDiscount Factor = {}\nNumber of Monte-Carlo Samples = {}\nsmoothing factor = {}".\
@@ -63,7 +57,10 @@ def train():
     N_forwadRewards      = env.N_forwadRewards               # Number of forwad rewards
     N_backwadRewards     = env.N_backwadRewards              # Number of backward rewards
     CoupledStateDim      = env.CoupledStateDim               # Space dimension of variables coupled between forward and backward dynamics
-        
+    
+    Optimizer = env.Optimizer
+    Resampling_flag = env.resampling_flag
+    
     print("-------------------------------------------------------------") 
     print( "Environemnt = {}\nSpace dimension of forward state = {}\nSpace dimension of backward state = {}\nAction-space dimension = {}". format(env_name,StateDim_FW,StateDim_BW,ActionDim))
     
@@ -72,7 +69,7 @@ def train():
     #/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     ''' Making a directory to log the results and parameters of the trained model'''
     directory = "Results"
-    directory = directory + '/' + env_name + '/'
+    directory = directory + '/' + env_name 
     if not os.path.exists(directory):
           os.makedirs(directory)
     print("-------------------------------------------------------------") 
@@ -85,17 +82,17 @@ def train():
     actor = Actor(StateDim_FW, DirichletActionDims, PositiveActionDim, \
                   CategoricalActionDim, CategoricalRange, NormalActionDim, BetaActionDim)      # Instantiate actor
     
-    criticFWBase = ForwardCriticBase( StateDim_FW, N_MCS, N_forwadRewards )                    # Instantiate forward-critic
-    FWCriticOptimizers = criticFWBase.optimizers                                               # set the forward-critic optimizer
+    criticFWBase = ForwardCriticBase( StateDim_FW, N_MCS, N_forwadRewards, LearningRate)                     # Instantiate forward-critic
+    FWCriticOptimizers = criticFWBase.optimizers                                                             # set the forward-critic optimizer
     
-    criticBWBase = BackwardCriticBase( StateDim_FW + StateDim_BW, N_MCS, N_backwadRewards )    # Instantiate backward-critic
-    BWCriticOptimizers = criticBWBase.optimizers                                               # set the backward-critic optimizer
+    criticBWBase = BackwardCriticBase( StateDim_FW + StateDim_BW, N_MCS, N_backwadRewards, LearningRate)     # Instantiate backward-critic
+    BWCriticOptimizers = criticBWBase.optimizers                                                             # set the backward-critic optimizer
     
 
     #/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     ''' Instantiating the agent of FB-MOAC '''
     # Instantiate agent  
-    agent = Agent(actor, criticFWBase, criticBWBase, FWCriticOptimizers, BWCriticOptimizers, MaxDirichletAction,  N_MCS, DiscountFactor, SmoothingFactor)
+    agent = Agent(actor, criticFWBase, criticBWBase, FWCriticOptimizers, BWCriticOptimizers, MaxDirichletAction,  N_MCS, DiscountFactor, SmoothingFactor, LearningRate)
     
 
     
@@ -136,10 +133,10 @@ def train():
                 done = False
                 
                 
-            # Get Action from the Actor NN
-            Action, Log_policyFW, EntropyFW = agent.Get_Action(StateFW)
+            # Get Action from the actor neural network
+            Action, Log_policyFW, EntropyFW = agent.Get_Action(StateFW, Resampling_flag)
             
-            # Get forward stateValue funcction from the forward-critic NN
+            # Get forward stateValue funcction from the forward-critic neural network
             StateValue_FW = agent.Get_ForwardStateValue(StateFW, N_MCS)
             
             # Take action, go to the next action and receive immediate forward rewards
@@ -197,7 +194,7 @@ def train():
             Action = Action_Acc[BackwardTimestep,:]
             
             
-            # Get backward StateValue function from the Actor NN
+            # Get backward StateValue function from the actor neural network
             StateValueBW = agent.Get_BackwardStateValue(StateBW_augmented, N_MCS)
             
             
@@ -224,7 +221,7 @@ def train():
         
         #/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
         ''' Step 3: Forward-Backward Optimization (updating forward-critic, backward-critic and actor agents) '''
-        agent.ForwardBackwardActorCriticUpdate(PreferenceCoeff, N_MCS, LearningRate, N_forwadRewards, N_backwadRewards) 
+        agent.ForwardBackwardActorCriticUpdate(PreferenceCoeff, N_MCS, N_forwadRewards, N_backwadRewards, Optimizer) 
             
         
         
@@ -252,7 +249,7 @@ def train():
         plt.xlabel("Episode Number")
         plt.ylabel("Cumulative Reward")
         plt.legend(["$r_{QoS}$", "$r_{BW}$", "$r_{Lat}$"])
-        plt.ylim(-10000,100)
+        plt.ylim(-12000,100)
         plt.show()
 
         if n_episode%Print_freq == 0:
@@ -261,7 +258,7 @@ def train():
     
         if n_episode%Save_model_freq ==0:
             allResults = torch.cat( (torch.tensor(reward_history_FW),\
-                                     torch.tensor(reward_history_BW)), dim = 1 )
+                                     torch.tensor(reward_history_BW) ), dim = 1 )
             file_path = os.path.join(directory, "Rresults.npy")
             np.save(file_path, allResults)
             file_path = os.path.join(directory, "TrainPerformance.png")
