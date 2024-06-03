@@ -5,21 +5,13 @@ Created on Tue May 23 11:29:48 2023
 
 """
 
-
-import os
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
-
 import numpy as np
 import torch
 import seaborn as sns
-from Agent_FBMOACv3 import Agent, ForwardCriticBase, BackwardCriticBase, Actor
-# from environments.EdgeCaching import NetEnv
-from environments.ComputationOffloading import NetEnv
-# from Environment_ComputationOffloadingv3 import NetEnv
+from FBMOAC import Agent, ForwardCriticBase, BackwardCriticBase, Actor
+from environments.EdgeCaching import NetEnv                               # Uncomment it for the edge caching experiment
+# from environments.ComputationOffloading import NetEnv                   # Uncomment it for the computation offloading experiment
 import matplotlib.pyplot as plt
-# torch.manual_seed(10)
-# np.random.seed(10)
-    
    
 # %% 
 def test():
@@ -66,6 +58,8 @@ def test():
     N_backwadRewards     = env.N_backwadRewards              # Number of backward rewards
     CoupledStateDim      = env.CoupledStateDim               # Space dimension of variables coupled between forward and backward dynamics
         
+    Legends_of_Rewards = env.RewardLegend                    # The legends of the forward-backward rewards, needed for plotting purposes.
+    
     print("-------------------------------------------------------------") 
     print( "Environemnt = {}\nSpace dimension of forward state = {}\nSpace dimension of backward state = {}\nAction-space dimension = {}". format(env_name,StateDim_FW,StateDim_BW,ActionDim))
     
@@ -90,17 +84,17 @@ def test():
     file_path = os.path.join(directory, "FBMOAC_ActorAgent.mdl")
     actor.load_state_dict(torch.load(file_path), strict=False)
         
-    criticFWBase = ForwardCriticBase( StateDim_FW, N_MCS, N_forwadRewards )                    # Instantiate forward-critic
-    FWCriticOptimizers = criticFWBase.optimizers                                               # set the forward-critic optimizer
+    criticFWBase = ForwardCriticBase( StateDim_FW, N_MCS, N_forwadRewards, LearningRate )                    # Instantiate forward-critic
+    FWCriticOptimizers = criticFWBase.optimizers                                                             # set the forward-critic optimizer
     
-    criticBWBase = BackwardCriticBase( StateDim_FW + StateDim_BW, N_MCS, N_backwadRewards )    # Instantiate backward-critic
-    BWCriticOptimizers = criticBWBase.optimizers                                               # set the backward-critic optimizer
+    criticBWBase = BackwardCriticBase( StateDim_FW + StateDim_BW, N_MCS, N_backwadRewards, LearningRate )    # Instantiate backward-critic
+    BWCriticOptimizers = criticBWBase.optimizers                                                             # set the backward-critic optimizer
     
 
     #/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
     ''' Instantiating the agent of FB-MOAC '''
     # Instantiate agent  
-    agent = Agent(actor, criticFWBase, criticBWBase, FWCriticOptimizers, BWCriticOptimizers, MaxDirichletAction,  N_MCS, DiscountFactor, SmoothingFactor)
+    agent = Agent(actor, criticFWBase, criticBWBase, FWCriticOptimizers, BWCriticOptimizers, MaxDirichletAction,  N_MCS, DiscountFactor, SmoothingFactor, LearningRate )
     
 
     
@@ -222,7 +216,7 @@ def test():
         plt.plot( np.concatenate(reward_history_BW, axis=1).T, alpha=0.8)
         plt.xlabel("Episode Number")
         plt.ylabel("Cumulative Reward")
-        plt.legend(["$r_{QoS}$", "$r_{BW}$", "$r_{Lat}$"])
+        plt.legend(Legends_of_Rewards)
         plt.ylim(-10000,100)
         plt.show()
 
@@ -235,7 +229,7 @@ def test():
                                      torch.tensor(reward_history_BW)), dim = 1 )
             file_path = os.path.join(directory, "Rresults_test.npy")
             np.save(file_path, allResults)
-            file_path = os.path.join(directory, "TrainPerformance_test.png")
+            file_path = os.path.join(directory, "TestPerformance.png")
             plt.savefig(file_path)
             # plt.show()
          
