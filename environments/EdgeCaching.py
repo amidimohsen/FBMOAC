@@ -15,34 +15,30 @@ from scipy.integrate import quad, fixed_quad, quadrature
 from scipy.special import comb
 np.seterr(over='ignore')
 
-
-torch.manual_seed(10)
-np.random.seed(10)
-
-
 class NetEnv:
     # %%
     def __init__(self):
         self.env_name = 'EdgeCaching'
         
-        self.Nfile            = 200                      # number of contents to be multicasted
-        self.Skewness         = 0.6                      # skewness of content popularity
-        self.StateDim_FW      = self.Nfile               # dimension of forward state
-        self.StateDim_BW      = self.Nfile               # dimension of backward state
-        self.CacheCapacity    = 10                       # cache capacity of serving nodes
-        self.ActionDim        = 2*self.Nfile+1           # dimension of action
-        self.CoupledStateDim  = self.Nfile               # dimension of variables coupled between forward and backward states
-        self.N_forwadRewards  = 2                        # number of forward reward functions
-        self.N_backwadRewards = 1                        # number of backward reward functions
+        self.Nfile            = 200                      # Number of contents to be multicasted
+        self.Skewness         = 0.6                      # Skewness of content popularity
+        self.StateDim_FW      = self.Nfile               # Dimension of forward state
+        self.StateDim_BW      = self.Nfile               # Dimension of backward state
+        self.CacheCapacity    = 10                       # Cache capacity of serving nodes
+        self.ActionDim        = 2*self.Nfile+1           # Dimension of action
+        self.CoupledStateDim  = self.Nfile               # Dimension of variables coupled between forward and backward states
+        self.N_forwadRewards  = 2                        # Number of forward reward functions
+        self.N_backwadRewards = 1                        # Number of backward reward functions
 
 
         self.DirichletActionDims  = [self.Nfile]            # List of dimensions of (dirichlet) actions which lie within [0, 1] with their sum equal to list of MaxDirichletAction
         self.MaxDirichletAction   = [self.CacheCapacity]    # List of summations of dirichlet distributions
-        self.NormalActionDim      = 0                       # dimension of unrestricted actions with normal distribution
-        self.PositiveActionDim    = self.Nfile              # dimension of positive actions with lognormal distribution
-        self.CategoricalActionDim = 1                       # dimension of categorical action
-        self.CategoricalRange     = 10                      # range of categorical action
-        self.BetaActionDim        = 0                       # List of dimensions actions which lie within [0, 1] 
+        self.NormalActionDim      = 0                       # Dimension of unrestricted actions with normal distribution
+        self.PositiveActionDim    = self.Nfile              # Dimension of positive actions with lognormal distribution
+        self.CategoricalActionDim = 1                       # Dimension of categorical action
+        self.CategoricalRange     = 10                      # Range of categorical action
+        self.BetaActionDim        = 0                       # Dimensions of actions which lie within [0, 1] 
+        
         
         self.Lambda_UE_fixed     = 1e5                      # Spatial intensity of users
         self.Lambda_HN           = 100                      # Spatial intensity of serving nodes
@@ -65,6 +61,8 @@ class NetEnv:
         self.ExperiencedDelay = []                         
         self.I_t              = []
         
+        self.Optimizer = "SGD"
+        self.resampling_flag = False
         
     # %%
     def ForwardStep(self, Action, TimeStep):
