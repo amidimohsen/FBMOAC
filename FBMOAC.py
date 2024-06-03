@@ -13,13 +13,14 @@ import torch.distributions as D
 
 import numpy as np
 from utils import Buffer, Optimize_Alpha
-
+# torch.manual_seed(10)
+# np.random.seed(10)
 
 class Actor(nn.Module):
     def __init__(self, StateDim, DirichletActionDims, PositiveActionDim, CategoricalActionDim, CategoricalRange, NormalActionDim, BetaActionDim):
         super().__init__()
         self.StateDim =  StateDim
-        self.HiddenDim = 200
+        self.HiddenDim = 100
         
         self.CategoricalRange = CategoricalRange
         self.PositiveActionDim = PositiveActionDim
@@ -42,11 +43,14 @@ class Actor(nn.Module):
         
         self.Lay2_CategoricalAction = nn.Linear(self.HiddenDim, self.CategoricalRange)
 
+            
     def init_weights_actor(self):
         for m in self.modules():
             if type(m) is torch.nn.Linear:
                 torch.nn.init.normal_(m.weight)
                 torch.nn.init.zeros_(m.bias)
+
+
 
     def Forward(self, State):
         OutputHidden = torch.tanh(self.Lay1(State))
@@ -101,10 +105,10 @@ class Actor(nn.Module):
 
 # %%
 class BackwardCriticBase(torch.nn.Module):
-    def __init__(self, StateDim, N_MCS, N_backward_rewards):
+    def __init__(self, StateDim, N_MCS, N_backward_rewards, LearningRate):
         super(BackwardCriticBase, self).__init__()
         self.StateDim = StateDim
-        self.HiddenDim = 200
+        self.HiddenDim = 100
         self.N_MCS = N_MCS
         self.backwardcritics = torch.nn.ModuleList([
             torch.nn.Sequential(
@@ -114,7 +118,7 @@ class BackwardCriticBase(torch.nn.Module):
                 for _ in range(N_MCS) 
                 ])
         
-        self.optimizers = [torch.optim.Adam(critic.parameters()) for critic in self.backwardcritics]
+        self.optimizers = [torch.optim.Adam(critic.parameters(), lr=LearningRate) for critic in self.backwardcritics]
 
     def init_weights_critic(self):
         for critic in self.backwardcritics:
@@ -131,10 +135,10 @@ class BackwardCriticBase(torch.nn.Module):
     
 # %%
 class ForwardCriticBase(torch.nn.Module):
-    def __init__(self, StateDim, N_MCS, N_forward_rewards):
+    def __init__(self, StateDim, N_MCS, N_forward_rewards, LearningRate):
         super(ForwardCriticBase, self).__init__()
         self.StateDim = StateDim
-        self.HiddenDim = 200
+        self.HiddenDim = 100
         self.N_MCS = N_MCS
         self.forwardcritics = torch.nn.ModuleList([
             torch.nn.Sequential(
@@ -144,7 +148,7 @@ class ForwardCriticBase(torch.nn.Module):
                 for _ in range(N_MCS)    
                 ])
         
-        self.optimizers = [torch.optim.Adam(critic.parameters()) for critic in self.forwardcritics]
+        self.optimizers = [torch.optim.Adam(critic.parameters(), lr=LearningRate) for critic in self.forwardcritics]
 
     def init_weights_critic(self):
         for critic in self.forwardcritics:
@@ -161,9 +165,11 @@ class ForwardCriticBase(torch.nn.Module):
     
   # %%
 class Agent(object):
-    def __init__(self, Actor, ForwardCriticBase, BackwardCriticBase, ForwardCriticOptimizers, BackwardCriticOptimizers, MaxDirichletAction, N_MCS, DiscountFactor, SmoothingFactor):
+    def __init__(self, Actor, ForwardCriticBase, BackwardCriticBase, ForwardCriticOptimizers, BackwardCriticOptimizers, MaxDirichletAction, N_MCS, DiscountFactor, SmoothingFactor, LearningRate):
         self.train_device = 'cpu'
-
+        
+        self.LearningRate = LearningRate
+        
         self.Entropys_FW = []
         self.Log_Policies_FW = []
         self.ForwardRewards = []   
@@ -183,7 +189,7 @@ class Agent(object):
         self.betta = -.0
 
         self.Actor = Actor
-        self.ActorOptimizer = torch.optim.Adam(Actor.parameters()) #LearningRate
+        self.ActorOptimizer = torch.optim.Adam(Actor.parameters(), lr=LearningRate) #LearningRate
 
         # Initialize critics and optimizers in a loop
         self.ForwardCriticBase = ForwardCriticBase
@@ -200,7 +206,8 @@ class Agent(object):
         self.GradientBW_Actor_mean = 0
 
 
-    def ForwardBackwardActorCriticUpdate(self, PreferenceCoeff, N_MCS, LearningRate, N_forward_rewards, N_backward_rewards):
+
+    def ForwardBackwardActorCriticUpdate(self, PreferenceCoeff, N_MCS, N_forward_rewards, N_backward_rewards, Optimizer):
         
         ''' Initialization '''
         PreferenceCoeff_FW = PreferenceCoeff[0:N_forward_rewards]   # Preference parameter of the forward rewards
@@ -281,15 +288,18 @@ class Agent(object):
             Loss_Critic_FW_MOO = (OptimumAlphaMOO * Loss_Critic_FW[i] ).sum()
     
     
-            # To update forward-critics '''
+            # backpropagating the forward-critics loss '''
             self.ForwardCriticOptimizers[i].zero_grad()
             Loss_Critic_FW_MOO.backward()
-            # self.ForwardCriticOptimizers[i].step()
-            for (i,params) in enumerate(self.ForwardCriticBase.forwardcritics[i].parameters()):
-                if (params.grad != None):
-                        params.data.copy_( params -LearningRate * params.grad )
-
-
+            if Optimizer == "Adam":
+                self.ForwardCriticOptimizers[i].step()
+            elif Optimizer == "SGD":
+                for (i,params) in enumerate(self.ForwardCriticBase.forwardcritics[i].parameters()):
+                    if (params.grad != None):
+                        params.data.copy_( params -self.LearningRate * params.grad )
+                        
+            # for param_group in self.ForwardCriticOptimizers[i].param_groups:
+                # param_group['lr'] = 0.997*param_group['lr']
 
 
 
@@ -332,15 +342,18 @@ class Agent(object):
             Loss_Critic_BW_MOO = (OptimumAlphaMOO * Loss_Critic_BW[i] ).sum()
     
     
-            # To update backward-critics '''
+            # backpropagating the backward-critics loss '''
             self.BackwardCriticOptimizers[i].zero_grad()
             Loss_Critic_BW_MOO.backward()
-            # self.BackwardCriticOptimizers[i].step()
-            for (i,params) in enumerate(self.BackwardCriticBase.backwardcritics[i].parameters()):
-                if (params.grad != None):
-                        params.data.copy_( params -LearningRate * params.grad )
+            if Optimizer == "Adam":
+                self.BackwardCriticOptimizers[i].step()
+            elif Optimizer == "SGD":
+                for (i,params) in enumerate(self.BackwardCriticBase.backwardcritics[i].parameters()):
+                    if (params.grad != None):
+                            params.data.copy_( params -self.LearningRate * params.grad )
                         
-            
+            # for param_group in self.BackwardCriticOptimizers[i].param_groups:
+                # param_group['lr'] = 0.997*param_group['lr']
             
             
 
@@ -397,21 +410,27 @@ class Agent(object):
 
 
 
-        ''' Update the Forward-Backward Actor using the common descent direction '''
+        ''' To update the Forward-Backward Actor using the common descent direction '''
         self.ActorOptimizer.zero_grad()
         Loss_ActorMOO.backward()
-        # self.ActorOptimizer.step()
-        for (i,params) in enumerate(self.Actor.parameters()):
-            if (params.grad != None):
-                params.data.copy_( params -LearningRate * params.grad )
+        if Optimizer == "Adam":
+            self.ActorOptimizer.step()
+        elif Optimizer == "SGD":
+            for (i,params) in enumerate(self.Actor.parameters()):
+                if (params.grad != None):
+                    params.data.copy_( params -self.LearningRate * params.grad )
 
+        # for param_group in self.ActorOptimizer.param_groups:
+            # param_group['lr'] = 0.997*param_group['lr']
+            
+            
+            
 
-
-    def Get_Action(self, stateFW, evaluations=False):
+    def Get_Action(self, stateFW, Resampling_flag, evaluations=False):
         StateFW = torch.from_numpy(stateFW).float().to(self.train_device)
     
         PolicyDist_Dirichlet, PolicyDist_logNormal, PolicyDist_Categorical, PolicyDist_Normal, PolicyDist_Beta,\
-            Mu_Dirichlet, Mu_logNormal, Mu_Categorical, Mu_Normal, Mu_Beta = self.Actor.Forward(StateFW)
+        Mu_Dirichlet,         Mu_logNormal,         Mu_Categorical,         Mu_Normal,         Mu_Beta           = self.Actor.Forward(StateFW)
         
         isEmpty_logNormal = len(Mu_logNormal)   == 0
         isEmpty_Normal    = len(Mu_Normal)      == 0
@@ -426,10 +445,14 @@ class Agent(object):
             BetaAction        = Mu_Beta
             
         else:
-            DirichletActions = [self.MaxDirichletAction[i] * PolicyDist_Dirichlet[i].sample() for i in range(len(self.MaxDirichletAction)) ]
+            DirichletActions = [self.MaxDirichletAction[i] * PolicyDist_Dirichlet[i].rsample() for i in range(len(self.MaxDirichletAction)) ]
+            
             PositiveAction = torch.zeros(size=[0])
             if not isEmpty_logNormal:
-                PositiveAction = PolicyDist_logNormal.sample()
+                if Resampling_flag:
+                    PositiveAction = PolicyDist_logNormal.rsample()                    
+                else:
+                    PositiveAction = PolicyDist_logNormal.sample()
                 
             CategoricalAction = torch.zeros(size=[0])
             if not isEmpty_Categoric:
@@ -437,39 +460,53 @@ class Agent(object):
                 
             NormalAction = torch.zeros(size=[0])
             if not isEmpty_Normal:
-                NormalAction = PolicyDist_Normal.sample()
+                if Resampling_flag:
+                    NormalAction = PolicyDist_Normal.rsample()
+                else:
+                    NormalAction = PolicyDist_Normal.sample()
 
             BetaAction = torch.zeros(size=[0])
             if not isEmpty_Beta:
-                BetaAction = PolicyDist_Beta.sample()
+                if Resampling_flag:
+                    BetaAction = PolicyDist_Beta.rsample()
+                else:
+                    BetaAction = PolicyDist_Beta.sample()
     
-
         DirichletActions_ = torch.cat(DirichletActions, dim=0)
         Action = torch.cat([DirichletActions_, PositiveAction, CategoricalAction + 1, NormalAction, BetaAction], 0)
     
          
         Log_Policy = 0  # Initialize as zero
         Log_Policy += sum([PolicyDist_Dirichlet[i].log_prob(DirichletActions[i]/self.MaxDirichletAction[i]) for i in range(len(self.MaxDirichletAction)) ])
+        
         if not isEmpty_logNormal:
             Log_Policy += PolicyDist_logNormal.log_prob(PositiveAction).sum()
+            
         if not isEmpty_Categoric:
             Log_Policy += PolicyDist_Categorical.log_prob(CategoricalAction)[0]
+            
         if not isEmpty_Normal:
             Log_Policy += PolicyDist_Normal.log_prob(NormalAction).sum()
+            
         if not isEmpty_Beta:
             Log_Policy += PolicyDist_Beta.log_prob(BetaAction).sum()
     
     
         Entropy = 0  # Initialize as zero
         Entropy += sum([dist.entropy() for dist in PolicyDist_Dirichlet])
+        
         if not isEmpty_logNormal:
             Entropy += PolicyDist_logNormal.entropy().sum()
+            
         if not isEmpty_Categoric:
             Entropy += PolicyDist_Categorical.entropy()
+            
         if not isEmpty_Normal:
             Entropy += PolicyDist_Normal.entropy()
+            
         if not isEmpty_Beta:
             Entropy += PolicyDist_Beta.entropy().sum()
+    
     
         return Action, Log_Policy, Entropy
     
@@ -479,7 +516,9 @@ class Agent(object):
     def Get_ForwardStateValue(self, stateFW, N_MCS):
         StateFW = torch.from_numpy(stateFW).float().to(self.train_device)
         StateValue_FW   =  self.ForwardCriticBase.forward(StateFW)
+        
         return StateValue_FW
+
 
 
     def Get_BackwardStateValue(self, stateBW, N_MCS):
