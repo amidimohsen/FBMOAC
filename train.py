@@ -2,15 +2,16 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue May 23 11:29:48 2023
-
 """
+
 import numpy as np
 import torch
 import seaborn as sns
 from FBMOAC import Agent, ForwardCriticBase, BackwardCriticBase, Actor
-from environments.EdgeCaching import NetEnv
-# from environments.ComputationOffloading import NetEnv
+from environments.EdgeCaching import NetEnv                               # Uncomment it for the edge caching experiment
+# from environments.ComputationOffloading import NetEnv                   # Uncomment it for the computation offloading experiment
 import matplotlib.pyplot as plt
+
 
 # %% 
 def train():
@@ -30,7 +31,7 @@ def train():
     LearningRate    = 3e-4                                   # Learning-Rate of the FB-MOAC algorithm (for the multi-objective actor, forward critic and backward critic networks)
     SmoothingFactor = 0.95                                   # The smoothing factor of the episodic MCS-average  add-on
     DiscountFactor  = 0.92                                   # Discount-factor related to the cumulative rewards.
-    PreferenceCoeff = torch.tensor([1,  1,  1/3])              # Preference parameter to extract a Pareto-front.
+    PreferenceCoeff = torch.tensor([1,  1,  1/3])            # Preference parameter to extract a Pareto-front.
     
     print("-------------------------------------------------------------") 
     print("Number of training episodes = {}\nNumber of time-steps in each episode = {}\nLearning Rate = {}\nDiscount Factor = {}\nNumber of Monte-Carlo Samples = {}\nsmoothing factor = {}".\
@@ -58,8 +59,10 @@ def train():
     N_backwadRewards     = env.N_backwadRewards              # Number of backward rewards
     CoupledStateDim      = env.CoupledStateDim               # Space dimension of variables coupled between forward and backward dynamics
     
-    Optimizer = env.Optimizer
-    Resampling_flag = env.resampling_flag
+    Optimizer = env.Optimizer                                # Type of the optimizer, Adam or SGD.
+    Resampling_flag = env.resampling_flag                    # The sampling method
+    
+    Legends_of_Rewards = env.RewardLegend                    # The legends of the forward-backward rewards, needed for plotting purposes.
     
     print("-------------------------------------------------------------") 
     print( "Environemnt = {}\nSpace dimension of forward state = {}\nSpace dimension of backward state = {}\nAction-space dimension = {}". format(env_name,StateDim_FW,StateDim_BW,ActionDim))
@@ -248,8 +251,8 @@ def train():
         plt.plot( np.concatenate(reward_history_BW, axis=1).T, alpha=0.8)
         plt.xlabel("Episode Number")
         plt.ylabel("Cumulative Reward")
-        plt.legend(["$r_{QoS}$", "$r_{BW}$", "$r_{Lat}$"])
-        plt.ylim(-12000,100)
+        plt.legend(Legends_of_Rewards)
+        plt.ylim(-4000,100)
         plt.show()
 
         if n_episode%Print_freq == 0:
