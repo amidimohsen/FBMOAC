@@ -8,10 +8,10 @@ It can be used also for standard MDP problems, but the htper-parameters need to 
 | <img src="/images/FB-MDPv3.png" alt="Alt Text" style="width:400px;"> |
 
 The diagram of FB-MOAC algorithm is shown below.
-|  Diagram of FB-MOAC algorithm:  *The FB-MOAC algorithm consists **forward evaluation**, **backward evaluation** and **bidirectional learning** steps. During the first two steps, the forward and backward dynamics are evaluated, using forward/backward critics, and the resulting experiences are buffered. By a proper chronological order, the policy distribution is optimized in the bidirectional learning step based on the experiences of both forward and backward dynamics and using a **forward-backward multi-objective learning**. The algorithm is additionally equipped with an add-on **episodic MCS-average** to boost the convergence to Pareto-optimal solutions.*|  Forward-Backward Multi-Objective Optimization of FB-MOAC: *This step first computes the vector-valued gradients of forward and backward objectives, then compute the descent direction $q(\cdot)$ to ensure that all rewards increase simultaneously,  and finally update the parameters of actor network based on $q(.)$.*  |
+|  Diagram of FB-MOAC algorithm |  Forward-Backward Multi-Objective Optimization of FB-MOAC  |
 | :-------------------------:| :-------------------------:|
-|  <img src="/images/fwbw-moac-1.png" alt="Alt Text" style="width:400px;">  |  <img src="/images/fwbw-moac-2.png" alt="Alt Text" style="width:300px;">  |
-
+|  <img src="/images/fwbw-moac-1.png" alt="Alt Text" style="width:400px;">  |  <img src="/images/fwbw-moac-2.png" alt="Alt Text" style="width:300px;"> |
+| The FB-MOAC algorithm consists **forward evaluation**, **backward evaluation** and **bidirectional learning** steps. During the first two steps, the forward and backward dynamics are evaluated, using forward/backward critics, and the resulting experiences are buffered. By a proper chronological order, the policy distribution is optimized in the bidirectional learning step based on the experiences of both forward and backward dynamics and using a **forward-backward multi-objective learning**. The algorithm is additionally equipped with an add-on **episodic MCS-average** to boost the convergence to Pareto-optimal solutions. | This step first computes the vector-valued gradients of forward and backward objectives, then compute the descent direction q(\.) to ensure that all rewards increase simultaneously,  and finally update the parameters of actor network based on q(.).|
 
 
 ## Usage
