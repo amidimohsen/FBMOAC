@@ -10,7 +10,7 @@ It can be used also for standard MDP problems, but the htper-parameters need to 
 The diagram of FB-MOAC algorithm is shown below.
 |  Diagram of FB-MOAC algorithm:  *The FB-MOAC algorithm consists **forward evaluation**, **backward evaluation** and **bidirectional learning** steps. During the first two steps, the forward and backward dynamics are evaluated, using forward/backward critics, and the resulting experiences are buffered. By a proper chronological order, the policy distribution is optimized in the bidirectional learning step based on the experiences of both forward and backward dynamics and using a **forward-backward multi-objective learning**. The algorithm is additionally equipped with an add-on **episodic MCS-average** to boost the convergence to Pareto-optimal solutions.*|  Forward-Backward Multi-Objective Optimization of FB-MOAC: *This step first computes the vector-valued gradients of forward and backward objectives, then compute the descent direction $q(\cdot)$ to ensure that all rewards increase simultaneously,  and finally update the parameters of actor network based on $q(.)$.*  |
 | :-------------------------:| :-------------------------:|
-|  <img src="/images/fwbw-moac-1.png" alt="Alt Text" style="width:400px;">  |  <img src="https://github.com/amidimohsen/FB-MOACv1/blob/main/images/fwbw-moac-2.png" alt="Alt Text" style="width:300px;">  |
+|  <img src="/images/fwbw-moac-1.png" alt="Alt Text" style="width:400px;">  |  <img src="/images/fwbw-moac-2.png" alt="Alt Text" style="width:300px;">  |
 
 
 
@@ -45,9 +45,9 @@ The diagram of FB-MOAC algorithm is shown below.
 
 
 ## Results
-| Obtained Pareto-set of FB-MOAC for edge-caching experiment  | Pareto-set for edge-caching experiment | Pareto-set for edge-caching experiment |
-| :-------------------------: | :-------------------------: | :-------------------------: |
-|  <img src="/images/Results/performance-pref_settings_1.png" alt="Alt Text" style="width:400px;"> |  <img src="/images/Results/performance-pref_settings_2.png" alt="Alt Text" style="width:400px;"> |  <img src="/images/Results/performance-pref_settings_3.png" alt="Alt Text" style="width:400px;"> |
+|Obtained Pareto-set of FB-MOAC for edge-caching experiment|Pareto-set for edge-caching experiment|Pareto-set for edge-caching experiment|
+|:-------------------------:|:-------------------------:|:-------------------------:|
+|  <img src="images/Results/performance-pref_settings_1.png" alt="Alt Text" style="width:400px;"> |  <img src="images/Results/offload-f-a2c.png" alt="Alt Text" style="width:400px;"> | <img src="images/Results/offload-f-a2c.png" alt="Alt Text" style="width:400px;"> | 
 
 
 | Comparison of FB-MOAC against PPO and A2C as RL algorithms and LFU as a rule-based caching approach | 
