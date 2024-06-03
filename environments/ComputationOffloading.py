@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Apr 19 20:44:56 2022
-
 """
 
 import numpy as  np
@@ -48,6 +47,9 @@ class NetEnv:
         
         self.Optimizer = "Adam"
         self.resampling_flag = True
+        
+        self.RewardLegend = ["$r_{OP}$", "$r_{CT}$"]                   # The legends of the forward-backward rewards, needed for plotting purposes.
+                                                                       # r_OP: overflow probability, r_CT: computation time 
         
         
     # %%
