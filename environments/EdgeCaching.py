@@ -2,17 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Apr 19 20:44:56 2022
-
-
 """
 
 import numpy as  np
 import torch as torch
 from scipy.special import erfc
-import scipy.special as sc
-import math
-from scipy.integrate import quad, fixed_quad, quadrature
-from scipy.special import comb
 np.seterr(over='ignore')
 
 class NetEnv:
