@@ -7,9 +7,6 @@ Created on Tue Apr 19 20:44:56 2022
 
 import numpy as  np
 import torch as torch
-# torch.manual_seed(10)
-# np.random.seed(10)
-
 
 class NetEnv:
     # %%    
