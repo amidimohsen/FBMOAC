@@ -69,6 +69,7 @@ Trained and Tested on:
 Python 3.11
 PyTorch
 NumPy
+scipy.special
 ```
 Training Environments 
 ```
