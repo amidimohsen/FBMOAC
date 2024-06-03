@@ -54,6 +54,9 @@ class NetEnv:
         self.ExperiencedDelay = []                                     # Instantaneous experienced delay for different tasks
         self.I_t = []
         
+        self.Optimizer = "Adam"
+        self.resampling_flag = True
+        
         
     # %%
     def ForwardStep(self, Action, TimeStep):
