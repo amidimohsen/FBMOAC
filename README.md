@@ -55,6 +55,11 @@ The diagram of FB-MOAC algorithm is shown below.
 |  <img src="images/Results/test-multicast.png" alt="Alt Text" style="width:400px;"> | 
 
 
+| Performance of solution of FB-MOAC for computation offloading experiment  |
+| :-------------------------:|
+|  <img src="images/Results/performance-offload-fb-moac.png" alt="Alt Text" style="width:400px;"> | 
+
+
 | Histogram of solution of FB-MOAC for computation offloading experiment  |
 | :-------------------------:|
 |  <img src="images/Results/offload-fb-moac.png" alt="Alt Text" style="width:400px;"> | 
