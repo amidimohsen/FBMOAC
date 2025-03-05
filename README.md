@@ -38,7 +38,7 @@ The diagram of FB-MOAC algorithm is shown below.
    - **LearningRate**    :                          Learning-Rate of the FB-MOAC algorithm, for *multi-objective actor* and *forward/backward critics*.
    - **SmoothingFactor** :                          The smoothing factor of the episodic MCS-average  add-on.
   -  **DiscountFactor**   :                         Discount-factor related to the cumulative rewards.
-  -  **PreferenceCoeff**                            Preference parameter to extract a Pareto-front. (e.g. for a problem with 2 forward rewards and one backward one, one may set PreferenceCoeff = torch.tensor([p1, p2, p3]) which means that forward rewards have p1 and p2 preferences and backward reward has p3. )
+  -  **PreferenceCoeff**                            Preference parameter, for forward and backward rewards, to extract a Pareto-front. (e.g. for a problem with 2 forward rewards and one backward one, one may set PreferenceCoeff = torch.tensor([p1, p2, p3]) which means that forward rewards have p1 and p2 preferences and backward reward has p3. )
 
 ##### Note :
   - For each environment, the hyper-parameters need fine-tuning. FB-MOAC can also be used for forward-only multi-objective MDP problems.
