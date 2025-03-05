@@ -59,6 +59,7 @@ Full details are given in the paper.
 |  <img src="images/Results/FBMOAC_FA2C_PPO.png" alt="Alt Text" style="width:400px;"> |  <img src="images/Results/test-multicast1.png" alt="Alt Text" style="width:400px;"> | 
 
 
+
 ### (2) Computation-Offloading  Experiment
 please refer to the Readme file inthe environment folder to see a brief explanation for this experiment. 
 Full details are given in the paper. 
@@ -74,10 +75,6 @@ Full details are given in the paper.
 |  <img src="images/Results/offload-f-ppo.png" alt="Alt Text" style="width:400px;"> |  <img src="images/Results/offload-f-a2c.png" alt="Alt Text" style="width:400px;"> | 
 
 
-| Set of Pareto Solutions  | 
-| :-------------------------:| 
-|  <img src="images/Results/Pareto-Front2.html" alt="Alt Text" style="width:400px;"> |
-| <iframe src="images/Results/Pareto-Front2.html" width="600" height="400"></iframe> |
 
 ## Dependencies
 Trained and Tested on:
