@@ -50,6 +50,11 @@ The diagram of FB-MOAC algorithm is shown below.
 |  <img src="images/Results/performance-pref_settings1.png" alt="Alt Text" style="width:400px;"> |  <img src="images/Results/performance-pref_settings2.png" alt="Alt Text" style="width:400px;"> | <img src="images/Results/performance-pref_settings3.png" alt="Alt Text" style="width:400px;"> | 
 
 
+|Obtained Pareto-set of FB-MOAC for edge-caching experiment
+|:-------------------------:|
+|  <img src="images/Results/fb-moac-scalarized-all.png" alt="Alt Text" style="width:400px;"> | 
+
+
 | Comparison of FB-MOAC against PPO and A2C as RL algorithms and LFU as a rule-based caching approach | 
 | :-------------------------:|
 |  <img src="images/Results/test-multicast.png" alt="Alt Text" style="width:400px;"> | 
