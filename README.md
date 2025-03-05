@@ -45,6 +45,7 @@ The diagram of FB-MOAC algorithm is shown below.
 
 
 ## Results
+### Edge-Cahing  Experiment (refer to the paper for the system model)
 |Obtained Pareto-set of FB-MOAC for edge-caching experiment
 |:-------------------------:|
 |  <img src="images/Results/multiobjective_comparison_preferences.png" alt="Alt Text" style="width:800px;"> | 
@@ -55,6 +56,7 @@ The diagram of FB-MOAC algorithm is shown below.
 |  <img src="images/Results/test-multicast1.png" alt="Alt Text" style="width:400px;"> | 
 
 
+### Computation-Offloading  Experiment (refer to the paper for the system model)
 | Performance of solution of FB-MOAC for computation offloading experiment  |
 | :-------------------------:|
 |  <img src="images/Results/performance-offload-fb-moac.png" alt="Alt Text" style="width:400px;"> | 
