@@ -51,7 +51,7 @@ Full details are given in the paper.
 
 |Obtained Pareto-set of FB-MOAC for edge-caching experiment
 |:-------------------------:|
-|  <img src="images/Results/multiobjective_comparison_preferences.png" alt="Alt Text" style="width:800px;"> | 
+|  <img src="images/Results/multiobjective_comparison_preferences.png" alt="Alt Text" style="width:1000px;"> | 
 
 
 | Training Comparison of FB-MOAC against PPO and a multi-objective A2C | Comparison of Final Solutions of FB-MOAC against PPO and a multi-objective A2C | 
