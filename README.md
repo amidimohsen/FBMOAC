@@ -64,9 +64,9 @@ please refer to the Readme file inthe environment folder to see a brief explanat
 Full details are given in the paper. 
 
 
-| Performance of solution of FB-MOAC for computation offloading experiment  |
-| :-------------------------:|
-|  <img src="images/Results/performance-offload-fb-moac.png" alt="Alt Text" style="width:400px;"> | 
+| Performance of solution of FB-MOAC for computation offloading experiment  | Histogram of solution of FB-MOAC for computation offloading experiment  |
+| :-------------------------:|:-------------------------:|
+|  <img src="images/Results/performance-offload-fb-moac.png" alt="Alt Text" style="width:400px;"> | <img src="images/Results/offload-fb-moac.png" alt="Alt Text" style="width:400px;"> |
 
 
 | Histogram of solution of FB-MOAC for computation offloading experiment  |
