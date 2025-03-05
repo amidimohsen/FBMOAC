@@ -50,9 +50,9 @@ The diagram of FB-MOAC algorithm is shown below.
 |  <img src="images/Results/multiobjective_comparison_preferences.png" alt="Alt Text" style="width:800px;"> | 
 
 
-| Comparison of FB-MOAC against PPO and A2C as RL algorithms and LFU as a rule-based caching approach | 
+| Comparison of FB-MOAC against PPO and a multi-objective A2C as RL algorithms | 
 | :-------------------------:|
-|  <img src="images/Results/test-multicast.png" alt="Alt Text" style="width:400px;"> | 
+|  <img src="images/Results/test-multicast1.png" alt="Alt Text" style="width:400px;"> | 
 
 
 | Performance of solution of FB-MOAC for computation offloading experiment  |
