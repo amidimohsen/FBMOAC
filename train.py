@@ -31,7 +31,7 @@ def train():
     LearningRate    = 3e-4                                   # Learning-Rate of the FB-MOAC algorithm (for the multi-objective actor, forward critic and backward critic networks)
     SmoothingFactor = 0.95                                   # The smoothing factor of the episodic MCS-average  add-on
     DiscountFactor  = 0.92                                   # Discount-factor related to the cumulative rewards.
-    PreferenceCoeff = torch.tensor([1,  1,  1/3])            # Preference parameter to extract a Pareto-front.
+    PreferenceCoeff = torch.tensor([1,  1,  1/3])            # Preference parameters, first for forward reward and then for backward rewards, to extract a Pareto-front.
     
     print("-------------------------------------------------------------") 
     print("Number of training episodes = {}\nNumber of time-steps in each episode = {}\nLearning Rate = {}\nDiscount Factor = {}\nNumber of Monte-Carlo Samples = {}\nsmoothing factor = {}".\
