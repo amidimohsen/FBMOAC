@@ -54,7 +54,7 @@ Full details are given in the paper.
 |  <img src="images/Results/multiobjective_comparison_preferences.png" alt="Alt Text" style="width:1000px;"> | 
 
 
-| Training Comparison of FB-MOAC against PPO and F-MOAC (a multi-objective A2C) | Comparison of Final Solutions of FB-MOAC against PPO and F-MOAC (a multi-objective A2C) | 
+| Training Comparison of FB-MOAC against PPO and MOAC (a multi-objective A2C) | Comparison of Final Solutions of FB-MOAC against PPO and MOAC (a multi-objective A2C) | 
 | :-------------------------:|:-------------------------:|
 |  <img src="images/Results/FBMOAC_FA2C_PPO.png" alt="Alt Text" style="width:400px;"> |  <img src="images/Results/test-multicast1.png" alt="Alt Text" style="width:400px;"> | 
 
