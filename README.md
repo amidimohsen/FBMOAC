@@ -45,9 +45,9 @@ The diagram of FB-MOAC algorithm is shown below.
 
 
 ## Results
-|Obtained Pareto-set of FB-MOAC for edge-caching experiment|Pareto-set for edge-caching experiment|Pareto-set for edge-caching experiment|
-|:-------------------------:|:-------------------------:|:-------------------------:|
-|  <img src="images/Results/performance-pref_settings1.png" alt="Alt Text" style="width:400px;"> |  <img src="images/Results/performance-pref_settings2.png" alt="Alt Text" style="width:400px;"> | <img src="images/Results/performance-pref_settings3.png" alt="Alt Text" style="width:400px;"> | 
+%|Obtained Pareto-set of FB-MOAC for edge-caching experiment|Pareto-set for edge-caching experiment|Pareto-set for edge-caching experiment|
+%|:-------------------------:|:-------------------------:|:-------------------------:|
+%|  <img src="images/Results/performance-pref_settings1.png" alt="Alt Text" style="width:400px;"> |  <img src="images/Results/performance-pref_settings2.png" alt="Alt Text" style="width:400px;"> | <img src="images/Results/performance-pref_settings3.png" alt="Alt Text" style="width:400px;"> | 
 
 
 |Obtained Pareto-set of FB-MOAC for edge-caching experiment
