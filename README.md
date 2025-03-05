@@ -76,7 +76,7 @@ Full details are given in the paper.
 
 | Set of Pareto Solutions  | 
 | :-------------------------:| 
-|  <img src="images/Results/Pareto-Front2.html" alt="Alt Text" style="width:400px;"> |
+|  <html src="images/Results/Pareto-Front2.html" alt="Alt Text" style="width:400px;"> |
 
 ## Dependencies
 Trained and Tested on:
