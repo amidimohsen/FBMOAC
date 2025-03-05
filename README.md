@@ -49,12 +49,12 @@ The diagram of FB-MOAC algorithm is shown below.
 please refer to the Readme file inthe environment folder to see a brief explanation for this experiment. 
 Full details are given in the paper. 
 
-|Obtained Pareto-set of FB-MOAC for edge-caching experiment
+|Obtained Pareto-set of FB-MOAC for edge-caching experiment |
 |:-------------------------:|
 |  <img src="images/Results/multiobjective_comparison_preferences.png" alt="Alt Text" style="width:1000px;"> | 
 
 
-| Training Comparison of FB-MOAC against PPO and a multi-objective A2C | Comparison of Final Solutions of FB-MOAC against PPO and a multi-objective A2C | 
+| Training Comparison of FB-MOAC against PPO and F-MOAC (a multi-objective A2C) | Comparison of Final Solutions of FB-MOAC against PPO and F-MOAC (a multi-objective A2C) | 
 | :-------------------------:|:-------------------------:|
 |  <img src="images/Results/FBMOAC_FA2C_PPO.png" alt="Alt Text" style="width:400px;"> |  <img src="images/Results/test-multicast1.png" alt="Alt Text" style="width:400px;"> | 
 
