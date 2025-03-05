@@ -73,6 +73,13 @@ Full details are given in the paper.
 | :-------------------------:|:-------------------------:|
 |  <img src="images/Results/offload-f-ppo.png" alt="Alt Text" style="width:400px;"> |  <img src="images/Results/offload-f-a2c.png" alt="Alt Text" style="width:400px;"> | 
 
+
+| Comparison of solution of PPO for computation offloading experiment  | Comparison of solution of A2C for computation offloading experiment  |
+| :-------------------------:|:-------------------------:|
+|  <img src="images/Results/Pareto-Front.html" alt="Alt Text" style="width:400px;"> |
+
+
+
 ## Dependencies
 Trained and Tested on:
 ```
