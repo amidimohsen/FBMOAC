@@ -54,9 +54,9 @@ Full details are given in the paper.
 |  <img src="images/Results/multiobjective_comparison_preferences.png" alt="Alt Text" style="width:800px;"> | 
 
 
-| Comparison of FB-MOAC against PPO and a multi-objective A2C as RL algorithms | 
-| :-------------------------:|
-|  <img src="images/Results/test-multicast1.png" alt="Alt Text" style="width:400px;"> | 
+| Training Comparison of FB-MOAC against PPO and a multi-objective A2C | Comparison of Converged Solutions of FB-MOAC against PPO and a multi-objective A2C | 
+| :-------------------------:|:-------------------------:|
+|  <img src="images/Results/FBMOAC_FA2C_PPO.png" alt="Alt Text" style="width:400px;"> |  <img src="images/Results/test-multicast1.png" alt="Alt Text" style="width:400px;"> | 
 
 
 ### (2) Computation-Offloading  Experiment
