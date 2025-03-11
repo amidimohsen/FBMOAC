@@ -262,25 +262,25 @@ class Agent(object):
 
         # Constituting the multi-objective loss of forward-critics'''
         for i in range(N_MCS):
-            Gradients_FW_Actor = [[] for _ in range(N_forward_rewards)]
+            Gradients_FW_Critic = [[] for _ in range(N_forward_rewards)]
             for k in range(N_forward_rewards):
                 self.ForwardCriticOptimizers[i].zero_grad()
                 Loss_Critic_FW[i][k].backward(retain_graph=True)
-                Gradient_FW_Actor = []
+                Gradient_FW_Critic = []
                 for params in self.ForwardCriticBase.forwardcritics[i].parameters():
                     if (params.grad != None):
-                        Gradient_FW_Actor = np.append(Gradient_FW_Actor, torch.flatten(params.grad))
+                        Gradient_FW_Critic = np.append(Gradient_FW_Critic, torch.flatten(params.grad))
         
-                Gradients_FW_Actor[k] = Gradient_FW_Actor
+                Gradients_FW_Critic[k] = Gradient_FW_Critic
          
             if N_forward_rewards ==1:
                 OptimumAlphaMOO = 1.0
                 
             elif N_forward_rewards==2:
-                OptimumAlphaMOO = Optimize_Alpha.Optimize_alphaMOO2(np.stack(Gradients_FW_Actor))
+                OptimumAlphaMOO = Optimize_Alpha.Optimize_alphaMOO2(np.stack(Gradients_FW_Critic))
                 
             elif N_forward_rewards==3:
-                OptimumAlphaMOO = Optimize_Alpha.Optimize_alphaMOO3(np.stack(Gradients_FW_Actor))
+                OptimumAlphaMOO = Optimize_Alpha.Optimize_alphaMOO3(np.stack(Gradients_FW_Critic))
                 
             else:
                 raise NotImplementedError()
@@ -294,7 +294,7 @@ class Agent(object):
             if Optimizer == "Adam":
                 self.ForwardCriticOptimizers[i].step()
             elif Optimizer == "SGD":
-                for (i,params) in enumerate(self.ForwardCriticBase.forwardcritics[i].parameters()):
+                for (_,params) in enumerate(self.ForwardCriticBase.forwardcritics[i].parameters()):
                     if (params.grad != None):
                         params.data.copy_( params -self.LearningRate * params.grad )
                         
@@ -316,25 +316,25 @@ class Agent(object):
 
         # Constituting the multi-objective loss of backward-critics'''
         for i in range(N_MCS):
-            Gradients_BW_Actor = [[] for _ in range(N_backward_rewards)]
+            Gradients_BW_Critic = [[] for _ in range(N_backward_rewards)]
             for k in range(N_backward_rewards):
                 self.BackwardCriticOptimizers[i].zero_grad()
                 Loss_Critic_BW[i][k].backward(retain_graph=True)
-                Gradient_BW_Actor = []
+                Gradient_BW_Critic = []
                 for params in self.BackwardCriticBase.backwardcritics[i].parameters():
                     if (params.grad != None):
-                        Gradient_BW_Actor = np.append(Gradient_BW_Actor, torch.flatten(params.grad))
+                        Gradient_BW_Critic = np.append(Gradient_BW_Critic, torch.flatten(params.grad))
         
-                Gradients_BW_Actor[k] = Gradient_BW_Actor
+                Gradients_BW_Critic[k] = Gradient_BW_Critic
          
             if N_backward_rewards ==1:
                 OptimumAlphaMOO = 1.0
                 
             elif N_backward_rewards==2:
-                OptimumAlphaMOO = Optimize_Alpha.Optimize_alphaMOO2(np.stack(Gradients_BW_Actor))
+                OptimumAlphaMOO = Optimize_Alpha.Optimize_alphaMOO2(np.stack(Gradients_BW_Critic))
                 
             elif N_backward_rewards==3:
-                OptimumAlphaMOO = Optimize_Alpha.Optimize_alphaMOO3(np.stack(Gradients_BW_Actor))
+                OptimumAlphaMOO = Optimize_Alpha.Optimize_alphaMOO3(np.stack(Gradients_BW_Critic))
                 
             else:
                 raise NotImplementedError()
@@ -348,7 +348,7 @@ class Agent(object):
             if Optimizer == "Adam":
                 self.BackwardCriticOptimizers[i].step()
             elif Optimizer == "SGD":
-                for (i,params) in enumerate(self.BackwardCriticBase.backwardcritics[i].parameters()):
+                for (_,params) in enumerate(self.BackwardCriticBase.backwardcritics[i].parameters()):
                     if (params.grad != None):
                             params.data.copy_( params -self.LearningRate * params.grad )
                         
@@ -416,7 +416,7 @@ class Agent(object):
         if Optimizer == "Adam":
             self.ActorOptimizer.step()
         elif Optimizer == "SGD":
-            for (i,params) in enumerate(self.Actor.parameters()):
+            for (_,params) in enumerate(self.Actor.parameters()):
                 if (params.grad != None):
                     params.data.copy_( params -self.LearningRate * params.grad )
 
@@ -445,7 +445,10 @@ class Agent(object):
             BetaAction        = Mu_Beta
             
         else:
-            DirichletActions = [self.MaxDirichletAction[i] * PolicyDist_Dirichlet[i].rsample() for i in range(len(self.MaxDirichletAction)) ]
+            if Resampling_flag:
+                DirichletActions = [self.MaxDirichletAction[i] * PolicyDist_Dirichlet[i].rsample() for i in range(len(self.MaxDirichletAction)) ]
+            else:
+                DirichletActions = [self.MaxDirichletAction[i] * PolicyDist_Dirichlet[i].sample() for i in range(len(self.MaxDirichletAction)) ]
             
             PositiveAction = torch.zeros(size=[0])
             if not isEmpty_logNormal:
@@ -547,4 +550,3 @@ class Agent(object):
         for i in range(N_MCS):
             self.StateValues_BW[i].append(StateValue[i])
             self.NewStateValues_BW[i].append(NewStateValue[i])
-
