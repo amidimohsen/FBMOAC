@@ -13,8 +13,7 @@ import torch.distributions as D
 
 import numpy as np
 from utils import Buffer, Optimize_Alpha
-# torch.manual_seed(10)
-# np.random.seed(10)
+
 
 class Actor(nn.Module):
     def __init__(self, StateDim, DirichletActionDims, PositiveActionDim, CategoricalActionDim, CategoricalRange, NormalActionDim, BetaActionDim):
@@ -258,8 +257,8 @@ class Agent(object):
             Advantages_FW[i] = (PreferenceCoeff_FW*ForwardRewards + self.gamma * NewStateValues_FW[i]).detach() -\
                 StateValues_FW[i]
             Loss_Critic_FW[i] = torch.sum( Advantages_FW[i]**2, dim=0 )
+        IndexBestCritic_FW =  torch.argmin(torch.stack(Loss_Critic_FW), dim=0)
         
-
         # Constituting the multi-objective loss of forward-critics'''
         for i in range(N_MCS):
             Gradients_FW_Critic = [[] for _ in range(N_forward_rewards)]
@@ -298,10 +297,7 @@ class Agent(object):
                     if (params.grad != None):
                         params.data.copy_( params -self.LearningRate * params.grad )
                         
-            # for param_group in self.ForwardCriticOptimizers[i].param_groups:
-                # param_group['lr'] = 0.997*param_group['lr']
-
-
+ 
 
         
         ''' To update backward-critics '''
@@ -312,7 +308,7 @@ class Agent(object):
             Advantages_BW[i] = (PreferenceCoeff_BW*BackwardRewards + self.gamma * NewStateValues_BW[i]).detach() -\
                 StateValues_BW[i]
             Loss_Critic_BW[i] = torch.sum( Advantages_BW[i]**2, dim=0 )
-        
+        IndexBestCritic_BW =  torch.argmin(torch.stack(Loss_Critic_BW), dim=0)
 
         # Constituting the multi-objective loss of backward-critics'''
         for i in range(N_MCS):
@@ -358,9 +354,10 @@ class Agent(object):
             
 
         ''' To constitute the forward-backward loss of the actor'''
-        Advantages_FW_avg = 0
-        for i in range(N_MCS):
-            Advantages_FW_avg += Advantages_FW[i]/N_MCS
+        # Advantages_FW_avg = 0
+        # for i in range(N_MCS):
+            # Advantages_FW_avg += Advantages_FW[i]/N_MCS
+        Advantages_FW_avg = torch.stack(Advantages_FW)[IndexBestCritic_FW,:,list(range(N_forward_rewards))].T
         Loss_FW_Actor = -torch.mean( Advantages_FW_avg.detach() * Log_Policies_FW[:,None], dim=0 ) 
         Gradients_FW_Actor = [[] for _ in range(N_forward_rewards)]
         for k in range(N_forward_rewards):
@@ -373,9 +370,10 @@ class Agent(object):
             Gradients_FW_Actor[k] = Gradient_FW_Actor
             
 
-        Advantages_BW_avg = 0
-        for i in range(N_MCS):
-            Advantages_BW_avg += Advantages_BW[i]/N_MCS
+        # Advantages_BW_avg = 0
+        # for i in range(N_MCS):
+            # Advantages_BW_avg += Advantages_BW[i]/N_MCS
+        Advantages_BW_avg = torch.stack(Advantages_BW)[IndexBestCritic_BW,:,list(range(N_backward_rewards))].T
         Loss_BW_Actor = -torch.mean( Advantages_BW_avg.detach() * torch.flip(Log_Policies_FW, dims=[0])[:,None], dim=0 )
         Gradients_BW_Actor = [[] for _ in range(N_backward_rewards)]
         for k in range(N_backward_rewards):
