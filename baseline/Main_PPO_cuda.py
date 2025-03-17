@@ -6,14 +6,9 @@ from datetime import datetime
 import torch
 import numpy as np
 import seaborn as sns
-# import gym
-# import roboschool
-# from Environment_FBMDP_OMPMC import NetEnv
-from EnvGithub import NetEnv
-
+from EdgeCaching import NetEnv
 import matplotlib.pyplot as plt
-
-from Agent_PPo_cuda import PPOAgent, ActorCritic
+from Agent_PPO import PPOAgent, ActorCritic
 
 # Set device for training
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
