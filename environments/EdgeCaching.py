@@ -112,8 +112,8 @@ class NetEnv:
         # ''' Rewards (total outage, total resource consumption)'''
         # Outage_total_bar = ( Func_delay(Delay) + (1 - Func_delay(Delay)) * Outage_MC_t ) * Outage_UC_t
         Outage_total_bar = Outage_MC_t
-        Reward_QoS_t =  -(  Lambda_UE_n * Outage_total_bar  ).sum()  /4.5e3
-        Reward_BW_t = - (Harmionic_BW * self.Rate * self.NormalizationFactor * np.sum(BW_Allocate) )/3e8    #1e8
+        Reward_QoS_t =  -(  Lambda_UE_n * Outage_total_bar  ).sum()  /1.5e3
+        Reward_BW_t = - (Harmionic_BW * self.Rate * self.NormalizationFactor * np.sum(BW_Allocate) )/1e8    
 
         self.Total_Outage =  Outage_total_bar
 
@@ -155,7 +155,7 @@ class NetEnv:
         ''' Reward Computatoin '''
         ''' Total Experiencd Delay '''
         Lambda_UE_n = CoupledState
-        Reward_delay = -np.sum(Lambda_UE_n * ExperiencedDelay)*0.5e-6
+        Reward_delay = -np.sum(Lambda_UE_n * ExperiencedDelay)/1.3e6
         Backward_Reward = Reward_delay[None][:,None]
 
         return Backward_State_new, Backward_Reward
