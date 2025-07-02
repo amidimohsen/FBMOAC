@@ -2,7 +2,8 @@
 
 ## 📑 Table of Contents
 - [Overview](#overview)
-- [Usage](#usage)
+- [Usage](##Usage)
+- [Usage](#Usage)
 - [Hyperparameters](#hyperparameters)
 - [Results](#results)
 - [Dependencies](#dependencies)
