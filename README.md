@@ -1,9 +1,5 @@
 # 🚀 FB‑MOAC v1.0: Forward–Backward Multi‑Objective Actor‑Critic ALgorithm
 
-##### Table of Contents  
-[Introduction](#headers)  
-[Usage](#Usage)  
-
 
 ## 📑  Introduction
 
