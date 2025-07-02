@@ -1,4 +1,4 @@
-## Introduction
+## 🚀 Introduction
 
 This repository provides a PyTorch implementation of Forward-Backward Multi-Objective Actor-Critic (**FB-MOAC**) algorithm that can solve *mult-objectuve* sequential decision making problems with **Forward-Backward Markov Decisoin Processes (FB-MDPs)**, see figure below.
 It can be used also for standard MDP problems, but the htper-parameters need to be fine-tuuned.
@@ -14,7 +14,7 @@ The diagram of FB-MOAC algorithm is shown below.
 | The FB-MOAC algorithm consists **forward evaluation**, **backward evaluation** and **bidirectional learning** steps. During the first two steps, the forward and backward dynamics are evaluated, using forward/backward critics, and the resulting experiences are buffered. By a proper chronological order, the policy distribution is optimized in the bidirectional learning step based on the experiences of both forward and backward dynamics and using a **forward-backward multi-objective learning**. The algorithm is additionally equipped with an add-on **episodic MCS-average** to boost the convergence to Pareto-optimal solutions. | This step first computes the vector-valued gradients of forward and backward objectives, then compute the descent direction q(\.) to ensure that all rewards increase simultaneously,  and finally update the parameters of actor network based on q(.).|
 
 
-## Usage
+## 🧪 Usage
 - To train the RL agent on a FB-MDP: run `train.py`
 - To test a preTrained network : run `test.py`
 
@@ -44,7 +44,7 @@ The diagram of FB-MOAC algorithm is shown below.
   - For each environment, the hyper-parameters need fine-tuning. FB-MOAC can also be used for forward-only multi-objective MDP problems.
 
 
-## Results
+## 📈  Results
 ### (1) Edge-Cahing  Experiment.
 please refer to the Readme file inthe environment folder to see a brief explanation for this experiment. 
 Full details are given in the paper. 
@@ -76,7 +76,7 @@ Full details are given in the paper.
 
 
 
-## Dependencies
+## 🛠️ Dependencies
 Trained and Tested on:
 ```
 Python 3.11
