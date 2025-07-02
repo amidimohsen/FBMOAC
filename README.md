@@ -7,7 +7,7 @@
 modeled by **Forward–Backward MDPs (FB‑MDPs)**—see the illustration below.
 It also supports standard MDPs with minimal tuning of hyperparameters.
 
-### Overview of the algotithm:
+### ⚙️ Overview of the algotithm:
 FB-MOAC comprises three steps: (i) **forward evaluation**, in which the forward dynamics is evaluated by generating actions 
 using a policy, (ii) **backward evaluation**, in which the backward dynamics is evaluated in a time-reversed way 
 by leveraging the actions generated in the previous step;
@@ -40,7 +40,7 @@ The diagram of FB-MOAC algorithm is shown below.
   For the edge caching experiment, please uncomment the syntax **from environments.EdgeCaching import NetEnv** and for the computation odffloading experiment uncomment the syntax **from environments.ComputationOffloading import NetEnv**
   in the train.py or test.py.
 
-### ⚙️ Algorithm hyperparameters:
+### 🔧 Algorithm hyperparameters:
 -    **Print_freq**        :                        The frequency based on which the training results should be printed. (after how many episodes).
  -   **Save_model_freq**    :                       The frequencyt based on which  the parameters of model should be saved.
   -  **AverageFrequency**   :                       The frequency based on which  the cumulative rewards should be averagd for the printing and logging purposes.
