@@ -1,7 +1,20 @@
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Usage](#usage)
+- [Hyperparameters](#hyperparameters)
+  - [Print_freq](#print_freq)
+  - [LearningRate](#learningrate)
+- [Results](#results)
+- [Dependencies](#dependencies)
+- [Related Work](#related-work)
+
+- 
 ## 🚀 Introduction
 
-This repository provides a PyTorch implementation of Forward-Backward Multi-Objective Actor-Critic (**FB-MOAC**) algorithm that can solve *mult-objectuve* sequential decision making problems with **Forward-Backward Markov Decisoin Processes (FB-MDPs)**, see figure below.
-It can be used also for standard MDP problems, but the htper-parameters need to be fine-tuuned.
+**FB‑MOAC** (Forward–Backward Multi‑Objective Actor‑Critic) is a PyTorch implementation for solving **multi‑objective** sequential decision problems 
+modeled as **Forward–Backward MDPs (FB‑MDPs)**—see the illustration below.
+It also supports standard MDPs with minimal tuning of hyperparameters.
 
 |  An examplery illustration of a FB-MDP.  |
 | :-------------------------:|
@@ -28,7 +41,7 @@ The diagram of FB-MOAC algorithm is shown below.
   For the edge caching experiment, please uncomment the syntax **from environments.EdgeCaching import NetEnv** and for the computation odffloading experiment uncomment the syntax **from environments.ComputationOffloading import NetEnv**
   in the train.py or test.py.
 
-### Algorithm hyperparameters:
+### ⚙️ Algorithm hyperparameters:
 -    **Print_freq**        :                        The frequency based on which the training results should be printed. (after how many episodes).
  -   **Save_model_freq**    :                       The frequencyt based on which  the parameters of model should be saved.
   -  **AverageFrequency**   :                       The frequency based on which  the cumulative rewards should be averagd for the printing and logging purposes.
