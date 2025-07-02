@@ -9,7 +9,7 @@ It also supports standard multi-objective MDPs with minimal tuning of hyperparam
 |  An examplery illustration of a FB-MDP.  |
 | :-------------------------:|
 | <img src="images/FB-MDPv3.png" alt="Alt Text" style="width:400px;"> |
-|forward states $\boldsymbol{s}_t$ and backward states  $\boldsymbol{y}_t$ apply the same actions $\boldsymbol{a}_t$, but with a different ordering in time. Moreover, FB-MDPs includes forward transition probability determining the evolution of the forward state $s_{t+1} \sim P_f(\cdot | \boldsymbol{s}_t,\boldsymbol{a}_t)$  and backqard transition probability specifying the evolution of the backward state.|
+|forward states **$s_t$** and backward states  **$y_t$** apply the same actions **$a_t$**, but with a different ordering in time. Moreover, FB-MDPs includes forward transition probability determining the evolution of the forward state $s_{t+1} \sim P_f(\cdot | s_t,a_t)$  and backward transition probability specifying the evolution of the backward state $y_{t-1} \sim P_b(\cdot | y_t,a_t)$.|
 
 🎯 **FB‑MOAC** is the first algorithm of its kind developed for multi-objective FB-MDP problems. <br>
 🎯 **FB‑MOAC** can also be leveraged to solve **stochastic optimal control** problems with **Forward-Backward Stochastic Differential Equaitons** (FB-SDEs).<br>
@@ -17,10 +17,10 @@ It also supports standard multi-objective MDPs with minimal tuning of hyperparam
 
 ## ⚙️ Overview of the algotithm:
 FB-MOAC comprises three steps: (i) **forward evaluation**, in which the forward dynamics is evaluated by generating actions 
-using a policy $\pi(\cdot | \boldsymbol{s}_t)$, (ii) **backward evaluation**, in which the backward dynamics is evaluated in a time-reversed way 
+using a policy $\pi(\cdot | {s}_t)$, (ii) **backward evaluation**, in which the backward dynamics is evaluated in a time-reversed way 
 by leveraging the actions generated in the previous step;
 and (iii) **bidirectional learning**, employing a multi-objective optimization mechanism **with a suitable chronological order** 
-to optimize the policy $\pi(\cdot | \boldsymbol{s}_t)$ based on the experiences obtained from both the forward and backward dynamics. <br>
+to optimize the policy $\pi(\cdot | {s}_t)$ based on the experiences obtained from both the forward and backward dynamics. <br>
 The diagram of FB-MOAC algorithm is shown below.
 |  Diagram of FB-MOAC algorithm |  Forward-Backward Multi-Objective Optimization of FB-MOAC  |
 | :-------------------------:| :-------------------------:|
