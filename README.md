@@ -9,7 +9,8 @@ It also supports standard multi-objective MDPs with minimal tuning of hyperparam
 |  An examplery illustration of a FB-MDP.  |
 | :-------------------------:|
 | <img src="images/FB-MDPv3.png" alt="Alt Text" style="width:400px;"> |
-|forward states **s**_t and backward states  **y**_t apply the same actions **a**_t, but with a different ordering in time.|
+|forward states **s**_t and backward states  **y**_t apply the same actions **a**_t, but with a different ordering in time. 
+Moreover, FB-MDPs includes forward transition probability determining the evolution of the forward state and backqard transition probability specifying the evolution of the backward state.|
 
 🎯 **FB‑MOAC** is the first algorithm of its kind developed for multi-objective FB-MDP problems. <br>
 🎯 **FB‑MOAC** can also be leveraged to solve **stochastic optimal control** problems with **Forward-Backward Stochastic Differential Equaitons** (FB-SDEs).<br>
