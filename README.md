@@ -1,16 +1,15 @@
-## Table of Contents
+# 🚀 FB‑MOAC: Forward–Backward Multi‑Objective Actor‑Critic
 
-- [Introduction](#Introduction)
-- [Usage](##Usage)
+## 📑 Table of Contents
+- [Overview](#overview)
+- [Usage](#usage)
 - [Hyperparameters](#hyperparameters)
-  - [Print_freq](#print_freq)
-  - [LearningRate](#learningrate)
 - [Results](#results)
 - [Dependencies](#dependencies)
-- [Related Work](#related-work)
+- [Reference](#reference)
 
 - 
-## 🚀 Introduction
+## 📑  Introduction
 
 **FB‑MOAC** (Forward–Backward Multi‑Objective Actor‑Critic) is a PyTorch implementation for solving **multi‑objective** sequential decision problems 
 modeled as **Forward–Backward MDPs (FB‑MDPs)**—see the illustration below.
@@ -107,7 +106,7 @@ Graphs
 matplotlib
 ```
 
-📚 ## Reference
+## 📚 Reference
 
 This repository accompanies:
 Mohsen Amidzade, Mario Di Francesco, "FB‑MOAC: Forward–Backward Multi‑Objective Actor‑Critic", TMLR, 2025.🔗 https://openreview.net/forum?id=li5DyC6rfS
