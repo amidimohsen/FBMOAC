@@ -10,7 +10,7 @@ It also supports standard multi-objective MDPs with minimal tuning of hyperparam
 | :-------------------------:|
 | <img src="images/FB-MDPv3.png" alt="Alt Text" style="width:400px;"> |
 
-🎯 **FB‑MOAC** is the first of its kind developed for multi-objective FB-MDP problems. <br>
+🎯 **FB‑MOAC** is the first algorithm of its kind developed for multi-objective FB-MDP problems. <br>
 🎯 **FB‑MOAC** can also be leveraged to solve **stochastic optimal control** problems with **Forward-Backward Stochastic Differential Equaitons** (FB-SDEs).<br>
 🎯 **FB‑MOAC** shows a convegence rate similar to RL algorithms developed for merely forward MDPs.
 
@@ -19,7 +19,7 @@ FB-MOAC comprises three steps: (i) **forward evaluation**, in which the forward 
 using a policy, (ii) **backward evaluation**, in which the backward dynamics is evaluated in a time-reversed way 
 by leveraging the actions generated in the previous step;
 and (iii) **bidirectional learning**, employing a multi-objective optimization mechanism **with a suitable chronological order** 
-to optimize the policy based on the experiences obtained from both the forward and backward dynamics. 
+to optimize the policy based on the experiences obtained from both the forward and backward dynamics. <br>
 The diagram of FB-MOAC algorithm is shown below.
 |  Diagram of FB-MOAC algorithm |  Forward-Backward Multi-Objective Optimization of FB-MOAC  |
 | :-------------------------:| :-------------------------:|
