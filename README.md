@@ -14,7 +14,7 @@ It also supports standard multi-objective MDPs with minimal tuning of hyperparam
 🎯 **FB‑MOAC** can also be leveraged to solve **stochastic optimal control** problems with **Forward-Backward Stochastic Differential Equaitons** (FB-SDEs).<br>
 🎯 **FB‑MOAC** shows a convegence rate similar to RL algorithms developed for merely forward MDPs.
 
-### ⚙️ Overview of the algotithm:
+## ⚙️ Overview of the algotithm:
 FB-MOAC comprises three steps: (i) **forward evaluation**, in which the forward dynamics is evaluated by generating actions 
 using a policy, (ii) **backward evaluation**, in which the backward dynamics is evaluated in a time-reversed way 
 by leveraging the actions generated in the previous step;
