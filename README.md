@@ -107,5 +107,7 @@ Graphs
 matplotlib
 ```
 
-## 📝 Related Work
-This implementation pertains to the accepted following paper in TMLR2025, https://openreview.net/forum?id=li5DyC6rfS.
+📚 ## Reference
+
+This repository accompanies:
+Mohsen Amidzade, Mario Di Francesco, "FB‑MOAC: Forward–Backward Multi‑Objective Actor‑Critic", TMLR, 2025.🔗 https://openreview.net/forum?id=li5DyC6rfS
