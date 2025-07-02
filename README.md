@@ -2,7 +2,7 @@
 
 ## 📑 Table of Contents
 
-- [-introduction](#introduction)
+- [introduction](#-introduction)
 - [Usage](#usage)
 - [Hyperparameters](#hyperparameters)
 - [Results](#results)
