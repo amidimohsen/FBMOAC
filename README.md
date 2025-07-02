@@ -1,4 +1,4 @@
-# 🚀 FB‑MOAC v1.0: Forward–Backward Multi‑Objective Actor‑Critic ALgorithm
+# FB‑MOAC v1.0: Forward–Backward Multi‑Objective Actor‑Critic ALgorithm
 
 ## 📑 introduction
 
