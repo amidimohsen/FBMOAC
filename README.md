@@ -55,7 +55,7 @@ The diagram of FB-MOAC algorithm is shown below.
 
 
 ## 📈  Results
-Foe the comparison purposes, we consider two baseline algorithms, namely **PPO** and **a multi-objective actor-critic (MOAC)**. However, to be able to use this algorithm, which are not designed for forward-backward MDP, we modify the problem by replacing the backward reward with a related one (for fairness) so that the backward MDP can be safely removed. FIgures below show both the performance of FB-MDP and its comparison with  **PPO** (called F-PPO) and **a multi-objective actor-critic** (called F-A2C).
+Foe the comparison purposes, we consider two baseline algorithms, namely **PPO** and a **multi-objective actor-critic (MOAC)**. However, to be able to use these algorithms, which are not designed for forward-backward MDPs, we modified the respective problems by replacing the backward reward(s) with a related one(s) (for fairness) so that the backward MDP can be safely removed. Figures below show both the performance of FB-MDP and its comparison with  **PPO** (called F-PPO) and the **multi-objective actor-critic** (called F-MOAC).
 
 ### (1) Edge-Cahing  Experiment.
 please refer to the Readme file in the environment folder to see a brief explanation for this experiment. 
