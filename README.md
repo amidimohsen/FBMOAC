@@ -1,7 +1,7 @@
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Usage](#usage)
+- [Introduction](#Introduction)
+- [Usage](##Usage)
 - [Hyperparameters](#hyperparameters)
   - [Print_freq](#print_freq)
   - [LearningRate](#learningrate)
