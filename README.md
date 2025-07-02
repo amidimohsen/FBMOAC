@@ -7,18 +7,16 @@
 modeled by **Forward–Backward MDPs (FB‑MDPs)**—see the illustration below.
 It also supports standard MDPs with minimal tuning of hyperparameters.
 
+|  An examplery illustration of a FB-MDP.  |
+| :-------------------------:|
+| <img src="images/FB-MDPv3.png" alt="Alt Text" style="width:400px;"> |
+
 ### ⚙️ Overview of the algotithm:
 FB-MOAC comprises three steps: (i) **forward evaluation**, in which the forward dynamics is evaluated by generating actions 
 using a policy, (ii) **backward evaluation**, in which the backward dynamics is evaluated in a time-reversed way 
 by leveraging the actions generated in the previous step;
 and (iii) **bidirectional learning**, employing a multi-objective optimization mechanism **with a suitable chronological order** 
 to optimize the policy based on the experiences obtained from both the forward and backward dynamics. 
-
-
-|  An examplery illustration of a FB-MDP.  |
-| :-------------------------:|
-| <img src="images/FB-MDPv3.png" alt="Alt Text" style="width:400px;"> |
-
 The diagram of FB-MOAC algorithm is shown below.
 |  Diagram of FB-MOAC algorithm |  Forward-Backward Multi-Objective Optimization of FB-MOAC  |
 | :-------------------------:| :-------------------------:|
