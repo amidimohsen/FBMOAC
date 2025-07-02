@@ -1,4 +1,4 @@
-# 🚀 FB‑MOAC: Forward–Backward Multi‑Objective Actor‑Critic
+# 🚀 FB‑MOAC v1.0: Forward–Backward Multi‑Objective Actor‑Critic ALgorithm
 
 
 ## 📑  Introduction
@@ -50,7 +50,7 @@ The diagram of FB-MOAC algorithm is shown below.
 
 ## 📈  Results
 ### (1) Edge-Cahing  Experiment.
-please refer to the Readme file inthe environment folder to see a brief explanation for this experiment. 
+please refer to the Readme file in the environment folder to see a brief explanation for this experiment. 
 Full details are given in the paper. 
 
 |Obtained Pareto-set of FB-MOAC for edge-caching experiment |
