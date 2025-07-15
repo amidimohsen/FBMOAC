@@ -114,3 +114,15 @@ matplotlib
 
 This repository accompanies:
 Mohsen Amidzade, Mario Di Francesco, "FB‑MOAC: Forward–Backward Multi‑Objective Actor‑Critic", TMLR, 2025.🔗 https://openreview.net/forum?id=li5DyC6rfS
+```
+@article{
+amidzadeh2025fbmoac,
+title={{FB}-{MOAC}: A Reinforcement Learning Algorithm for Forward-Backward Markov Decision Processes},
+author={Mohsen Amidzadeh and Mario Di Francesco},
+journal={Transactions on Machine Learning Research},
+issn={2835-8856},
+year={2025},
+url={https://openreview.net/forum?id=li5DyC6rfS},
+note={}
+}
+```
