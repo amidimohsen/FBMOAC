@@ -123,6 +123,5 @@ journal={Transactions on Machine Learning Research},
 issn={2835-8856},
 year={2025},
 url={https://openreview.net/forum?id=li5DyC6rfS},
-note={}
 }
 ```
